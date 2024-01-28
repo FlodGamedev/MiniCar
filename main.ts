@@ -2,9 +2,9 @@
 let address = 0x30
 
 enum Motorlist {
-    //% block="A"
+    //% block="L"
     M1 = 1,
-    //% block="B"
+    //% block="R"
     M2 = 2
 }
 
@@ -16,9 +16,11 @@ enum Direction1 {
 }
 enum LED_rgb_L_R {
     //% bolck="LED_R"
-    LED_R = 1,
+    LED_R = 0,
     //% bolck="LED_L"
-    LED_L = 0,
+    LED_L = 1,
+    //% bolck="LED_R + LED_L"
+    LED_LR = 2,
 }
 
 enum LED_color {
@@ -167,6 +169,10 @@ namespace MiniCar {
     //% direction.shadow=timePicker
     //% group="RGB LED" weight=68
     export function led_rgb(place: LED_rgb_L_R, color: LED_color) {
+        if (place == 2) {
+            led_rgb(0, color);
+            led_rgb(1, color);
+        }
         if (place == 1) {
             switch (color) {
                 case 1: { motor_i2cWrite(0x08, 0); motor_i2cWrite(0x07, 255); motor_i2cWrite(0x06, 255); };
